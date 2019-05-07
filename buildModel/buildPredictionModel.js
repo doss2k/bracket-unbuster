@@ -52,10 +52,8 @@ const outputTest = tf.tensor(test.output, [test.output.length, 1]);
   fs.writeFileSync('../testData/History.json', JSON.stringify(history));
   console.log(history);
   console.log('number of samples: ',train.features.length/train.numberOfFeatures);
-})().then(async ()=> {
+})().then(()=> {
   console.log('training complete');
   model.predict(tf.tensor(test.features, [test.output.length, test.numberOfFeatures])).print();
-  const saveResult = await model.save(tf.io.browserHTTPRequest(
-    'http://localhost:8000/api/getModel',
-    {method: 'POST', headers: {'Content-type': 'application/json'}}));
+  // model.save('downloads://models/ncaaPredictionModel');
 })
