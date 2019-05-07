@@ -9,6 +9,11 @@
   "author": "Jason Doss",
   "license": "ISC",
   "dependencies": {
-    "@tensorflow/tfjs": "^1.1.0"
+    "@tensorflow/tfjs": "^1.1.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mysql": "^2.17.1",
+    "windows-build-tools": "^4.0.0"
   }
 }

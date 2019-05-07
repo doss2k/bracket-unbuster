@@ -34,7 +34,7 @@ class NCAAPredictor extends Component {
      // Creates drop down menu that populates with all of the available teams
 
       <div className="container">
-        <h1 className="text-center" style={{marginBottom: 30}}>Bracket Un-Buster</h1>
+        <h1 className="text-center" style={{marginBottom: 30, color: 'white'}}>Bracket Un-Buster</h1>
         <div className="row justify-content-center">
           <form onSubmit={this.handleSubmit}>
             <select
