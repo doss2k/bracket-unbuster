@@ -2,3 +2,17 @@ body {
   background-image: url('http://www.kinyu-z.net/data/wallpapers/236/1532149.jpg');
   background-size: cover;
 }
+
+@keyframes example {
+  from {width: 50px; height: 50px;}
+  to {width: 350px; height: 350px}
+}
+
+.teamLogo {
+  width: 85%;
+  height: auto;
+  margin: auto;
+  display: block;
+  /* animation-name: example;
+  animation-duration: 1s; */
+}
