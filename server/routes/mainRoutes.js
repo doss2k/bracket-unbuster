@@ -1,8 +1,5 @@
 const router = require("express").Router();
 const server = require("../server");
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 const pool = server.getPool();
 
 // Test endpoint to verify frontend to backend is working
@@ -12,11 +9,6 @@ router.get("/api/ncaa2019", (request, response) => {
     if (error) throw error;
     response.json(results);
   });
-});
-
-router.post("/api/getModel", (request, response) => {
-  console.log(request.body)
-    response.json(request);
 });
 
 // Test endpoint to verify frontend to backend is working

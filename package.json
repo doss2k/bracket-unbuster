@@ -13,9 +13,6 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "mysql": "^2.17.1",
-    "node-gyp": "^4.0.0",
-    "rebuild": "^0.1.2",
-    "windows-build-tools": "^4.0.0"
+    "mysql": "^2.17.1"
   }
 }
