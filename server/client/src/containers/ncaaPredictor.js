@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchAllTeams } from '../actions/teams';
+import { fetchAllTeams, fetchTeam1Stats, fetchTeam2Stats } from '../actions/teams';
 
 const tf = require('@tensorflow/tfjs');
 
@@ -40,7 +40,8 @@ class NCAAPredictor extends Component {
   }
      
   handlePrediction = (event) => {
-    console.log('Predict button pushed')
+    this.props.fetchTeam1Stats(this.state.team1);
+    this.props.fetchTeam2Stats(this.state.team2);
 
   };
 
@@ -108,10 +109,12 @@ class NCAAPredictor extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  teams: state.teamsReducer.teams
+  teams: state.teamsReducer.teams,
+  team1stats: state.team1Reducer.team1stats,
+  team2stats: state.team2Reducer.team2stats
 });
 
 const mapDispatchToProps = (dispatch) =>
-  bindActionCreators({ fetchAllTeams }, dispatch);
+  bindActionCreators({ fetchAllTeams, fetchTeam1Stats, fetchTeam2Stats }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(NCAAPredictor);
