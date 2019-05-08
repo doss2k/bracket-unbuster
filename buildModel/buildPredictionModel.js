@@ -1,19 +1,19 @@
-const tf = require('@tensorflow/tfjs-node');
+const tf = require('@tensorflow/tfjs');
 const fs = require('fs');
 const train = JSON.parse(fs.readFileSync('../testData/train.JSON'));
 const test = JSON.parse(fs.readFileSync('../testData/test.JSON'));
 
 // These are adjustable parameters for training the model
-const ACTIVATION = 'relu6';
-const LEARNINGRATE = 0.0018;
-const EPOCHS = 700;
+const ACTIVATION = 'relu';
+const LEARNINGRATE = 0.0015;
+const EPOCHS = 1000;
 
 // Define a model
 const model = tf.sequential();
 
 // Creates the hidden layer
 model.add(tf.layers.dense({
-  units: 12, 
+  units: 8, 
   inputShape: [train.numberOfFeatures],
   activation: ACTIVATION,
 }));
@@ -24,13 +24,11 @@ model.add(tf.layers.dense({
 }));
 
 model.summary();
-const learningRate = LEARNINGRATE;
-const sgdOpt = tf.train.sgd(learningRate);
 
 model.compile({
-  loss: 'meanSquaredError', 
-  optimizer: sgdOpt,
-  metrics: ['mae']
+  loss: tf.losses.meanSquaredError, 
+  optimizer: tf.train.adam(LEARNINGRATE),
+  metrics: ['mse']
 });
 
 // Create tensors for the training data
@@ -55,5 +53,5 @@ const outputTest = tf.tensor(test.output, [test.output.length, 1]);
 })().then(()=> {
   console.log('training complete');
   model.predict(tf.tensor(test.features, [test.output.length, test.numberOfFeatures])).print();
-  model.save('file://model');
+  //model.save('file://model');
 })
