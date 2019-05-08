@@ -1,12 +1,12 @@
-const tf = require('@tensorflow/tfjs');
+const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 const train = JSON.parse(fs.readFileSync('../testData/train.JSON'));
 const test = JSON.parse(fs.readFileSync('../testData/test.JSON'));
 
 // These are adjustable parameters for training the model
 const ACTIVATION = 'relu';
-const LEARNINGRATE = 0.0015;
-const EPOCHS = 1000;
+const LEARNINGRATE = 0.0012;
+const EPOCHS = 800;
 
 // Define a model
 const model = tf.sequential();
@@ -53,5 +53,5 @@ const outputTest = tf.tensor(test.output, [test.output.length, 1]);
 })().then(()=> {
   console.log('training complete');
   model.predict(tf.tensor(test.features, [test.output.length, test.numberOfFeatures])).print();
-  //model.save('file://model');
+  model.save('file://../model');
 })
