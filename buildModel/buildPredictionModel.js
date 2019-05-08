@@ -1,4 +1,4 @@
-const tf = require('@tensorflow/tfjs');
+const tf = require('@tensorflow/tfjs-node');
 const fs = require('fs');
 const train = JSON.parse(fs.readFileSync('../testData/train.JSON'));
 const test = JSON.parse(fs.readFileSync('../testData/test.JSON'));
@@ -55,5 +55,5 @@ const outputTest = tf.tensor(test.output, [test.output.length, 1]);
 })().then(()=> {
   console.log('training complete');
   model.predict(tf.tensor(test.features, [test.output.length, test.numberOfFeatures])).print();
-  // model.save('downloads://models/ncaaPredictionModel');
+  model.save('file://model');
 })
