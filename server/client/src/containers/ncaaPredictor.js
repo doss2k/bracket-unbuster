@@ -19,6 +19,10 @@ class NCAAPredictor extends Component {
     team2: '',
     team1logo: '' || 'https://miro.medium.com/max/480/1*0iD-PD-u-9-Kmd_6TakeEw.png',
     team2logo: '' || 'https://miro.medium.com/max/480/1*0iD-PD-u-9-Kmd_6TakeEw.png',
+    team1versus2: [],
+    team2versus1: [],
+    team1PredictedScore: 0,
+    team2PredictedScore: 0
   }
   
   onInputChangeTeam1 = (event) => {
@@ -39,11 +43,55 @@ class NCAAPredictor extends Component {
     }
   }
      
-  handlePrediction = (event) => {
-    this.props.fetchTeam1Stats(this.state.team1);
-    this.props.fetchTeam2Stats(this.state.team2);
+  handlePrediction = async (event) => {
+    await this.props.fetchTeam1Stats(this.state.team1);
+    await this.props.fetchTeam2Stats(this.state.team2);
+    this.processStats();
+  }
 
-  };
+  processStats = async () => {
+    let team1versus2 = [];
+    let team2versus1 = [];
+
+    team1versus2.push(
+      this.props.team1stats[0].AdjTempo, 
+      this.props.team1stats[0].AdjOE,
+      this.props.team1stats[0].OffeFGPct,
+      this.props.team1stats[0].OffTOPct,
+      this.props.team1stats[0].OffORPct,
+      this.props.team1stats[0].OffFTRate,
+      this.props.team2stats[0].AdjTempo, 
+      this.props.team2stats[0].AdjDE,
+      this.props.team2stats[0].DefeFGPct,
+      this.props.team2stats[0].DefTOPct,
+      this.props.team2stats[0].DefORPct,
+      this.props.team2stats[0].DefFTRate
+    )
+
+    team2versus1.push(
+      this.props.team2stats[0].AdjTempo, 
+      this.props.team2stats[0].AdjOE,
+      this.props.team2stats[0].OffeFGPct,
+      this.props.team2stats[0].OffTOPct,
+      this.props.team2stats[0].OffORPct,
+      this.props.team2stats[0].OffFTRate,
+      this.props.team1stats[0].AdjTempo, 
+      this.props.team1stats[0].AdjDE,
+      this.props.team1stats[0].DefeFGPct,
+      this.props.team1stats[0].DefTOPct,
+      this.props.team1stats[0].DefORPct,
+      this.props.team1stats[0].DefFTRate
+    )
+    this.setState({team1versus2, team2versus1});
+    this.makePrediction();
+  }
+
+  makePrediction = async () => {
+    const model = await tf.loadLayersModel('http://localhost:8000/model.json');
+    const team1PredictedScore = await model.predict(tf.tensor(this.state.team1versus2, [1, 12])).data();
+    const team2PredictedScore = await model.predict(tf.tensor(this.state.team2versus1, [1, 12])).data();
+    this.setState({team1PredictedScore, team2PredictedScore});
+  }
 
   render() {
     if(!this.props.teams) {
@@ -73,7 +121,7 @@ class NCAAPredictor extends Component {
                 ))}
               </select>
               <img style={{marginTop: 20}} className="teamLogo img-fluid" src={this.state.team1logo} />
-              <h4 style={{color: 'white', marginTop: 20}}>Predicted Score: </h4>
+              <h4 style={{color: 'white', marginTop: 20}}>Predicted Score: {this.state.team1PredictedScore} </h4>
             </div>
             <div className="col-md-4 text-center">            
               <button className="btn btn-primary btn-lg" type="button" onClick={this.handlePrediction} style={{marginTop: 250}} disabled={this.state.team1 === this.state.team2}>
@@ -100,7 +148,7 @@ class NCAAPredictor extends Component {
                 ))}
               </select>
                 <img style={{marginTop: 20}} className="teamLogo img-fluid" src={this.state.team2logo} />
-                <h4 style={{color: 'white', marginTop: 20}}>Predicted Score: </h4>
+                <h4 style={{color: 'white', marginTop: 20}}>Predicted Score: {this.state.team2PredictedScore}</h4>
             </div>
         </div>
       </div>        
