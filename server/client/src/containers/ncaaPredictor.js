@@ -5,10 +5,6 @@ import { fetchAllTeams, fetchTeam1Stats, fetchTeam2Stats } from '../actions/team
 
 const tf = require('@tensorflow/tfjs');
 
-// Loads the trained model from the local file to use for prediction
-
-const model = tf.loadLayersModel('http://localhost:8000/model.json');
-
 class NCAAPredictor extends Component {
   componentDidMount() {
     this.props.fetchAllTeams();
@@ -110,18 +106,28 @@ class NCAAPredictor extends Component {
                 style={{marginTop: 50}}
               >
                 <option value="default" style={{display: 'none'}}>Select Team 1</option>
-                {this.props.teams.map(teams => (
+                {this.props.teams.map(team => (
+                  team.InTournament === "Yes" ?
                   <option
-                    key={teams.TeamName}
-                    value={teams.TeamName}
-                    name={teams.TeamName}
+                    key={team.TeamName}
+                    value={team.TeamName}
+                    name={team.TeamName}
+                    style={{fontWeight: 'bold'}}
                   >
-                    {teams.TeamName}
+                    {team.TeamName}
+                  </option>
+                  :
+                  <option
+                    key={team.TeamName}
+                    value={team.TeamName}
+                    name={team.TeamName}
+                  >
+                    {team.TeamName}
                   </option>
                 ))}
               </select>
-              <img style={{marginTop: 20}} className="teamLogo img-fluid" src={this.state.team1logo} />
-              <h4 style={{color: 'white', marginTop: 20}}>Predicted Score: {this.state.team1PredictedScore} </h4>
+              <img style={{marginTop: 20}} className="teamLogo img-fluid" src={this.state.team1logo} alt="Team 1" />
+              <h2 className="text-center" style={{color: 'white', marginTop: 20}}>Score: {Math.round(this.state.team1PredictedScore)} </h2>
             </div>
             <div className="col-md-4 text-center">            
               <button className="btn btn-primary btn-lg" type="button" onClick={this.handlePrediction} style={{marginTop: 250}} disabled={this.state.team1 === this.state.team2}>
@@ -137,18 +143,28 @@ class NCAAPredictor extends Component {
                 style={{marginTop: 50}}
               >
                 <option value="default" style={{display: 'none'}}>Select Team 2</option>
-                {this.props.teams.map(teams => (
+                {this.props.teams.map(team => (
+                  team.InTournament === "Yes" ?
                   <option
-                    key={teams.TeamName}
-                    value={teams.TeamName}
-                    name={teams.TeamName}
+                    key={team.TeamName}
+                    value={team.TeamName}
+                    name={team.TeamName}
+                    style={{fontWeight: 'bold'}}
                   >
-                    {teams.TeamName}
+                    {team.TeamName}
+                  </option>
+                  :
+                  <option
+                    key={team.TeamName}
+                    value={team.TeamName}
+                    name={team.TeamName}
+                  >
+                    {team.TeamName}
                   </option>
                 ))}
               </select>
-                <img style={{marginTop: 20}} className="teamLogo img-fluid" src={this.state.team2logo} />
-                <h4 style={{color: 'white', marginTop: 20}}>Predicted Score: {this.state.team2PredictedScore}</h4>
+              <img style={{marginTop: 20}} className="teamLogo img-fluid" src={this.state.team2logo} alt="Team 2" />
+              <h2 className="text-center" style={{color: 'white', marginTop: 20}}>Score: {Math.round(this.state.team2PredictedScore)}</h2>
             </div>
         </div>
       </div>        
