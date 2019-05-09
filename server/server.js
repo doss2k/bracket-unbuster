@@ -11,22 +11,21 @@ let pool;
 module.exports = {
   getPool: function() {
     if (pool) return pool;
-    // if (process.env.NODE_ENV === 'production') {
-    //   pool = mysql.createPool({
-    //     host: "us-cdbr-iron-east-02.cleardb.net",
-    //     user: "b3a680a1274e8c",
-    //     password: "926ce534",
-    //     database: "heroku_4d0bb8f5ad72994",
-    //     connectionLimit: 10
-    //   });
-    // } else {
+    if (process.env.NODE_ENV === 'production') {
+      pool = mysql.createPool({
+        host: process.env.host,
+        user: process.env.user,
+        password: process.env.password,
+        database: process.env.database
+      });
+    } else {
       pool = mysql.createPool({
         host: "localhost",
         user: 'doss2k', // MySQL username
         password: 'password', // MySQL password
         database: "ncaatraindata" // MySQL database name
       });
-    //  }
+     }
     return pool;
   }
 };
@@ -50,5 +49,5 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.listen(port, () => {
-  console.log("Server is listening on port " + 8000);
+  console.log("Server is listening on port " + port);
 });
