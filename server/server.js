@@ -34,7 +34,7 @@ const mainRoutes = require("./routes/mainRoutes");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(mainRoutes);
-app.use(express.static('../server/model'))
+app.use(express.static('../server/client/src/model'))
 
 if (process.env.NODE_ENV === "production") {
   // Express will serve up production assets
