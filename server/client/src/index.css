@@ -17,7 +17,26 @@ h1 {
 }
 
 .teamSelect {
-  width: 90%;
+  width: 85%;
   margin: auto;
   text-align-last: center;
+}
+
+.container-fluid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.team1box {
+  grid-column: span 5;
+  margin-left: 100px;
+}
+
+.predictBox {
+  grid-column: span 2;
+}
+
+.team2box {
+  grid-column: span 5;
+  margin-right: 100px;
 }
