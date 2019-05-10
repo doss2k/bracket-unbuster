@@ -25,6 +25,7 @@ h1 {
 .container-fluid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  padding: 0;
 }
 
 .team1box {
