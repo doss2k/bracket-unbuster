@@ -83,7 +83,7 @@ class NCAAPredictor extends Component {
   }
 
   makePrediction = async () => {
-    const model = await tf.loadLayersModel('/model.json');
+    const model = await tf.loadLayersModel('model.json');
     const team1PredictedScore = await model.predict(tf.tensor(this.state.team1versus2, [1, 12])).data();
     const team2PredictedScore = await model.predict(tf.tensor(this.state.team2versus1, [1, 12])).data();
     this.setState({team1PredictedScore, team2PredictedScore});

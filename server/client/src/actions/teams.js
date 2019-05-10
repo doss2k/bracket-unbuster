@@ -11,7 +11,6 @@ export const fetchAllTeams = async () => {
 
 export const fetchTeam1Stats = async (teamName) => {
   const request = await axios.get(`/api/ncaa2019/${teamName}`);
-  console.log(request)
   return {
     type: actionTypes.GET_TEAM_1_STATS,
     payload: request
@@ -20,7 +19,6 @@ export const fetchTeam1Stats = async (teamName) => {
 
 export const fetchTeam2Stats = async (teamName) => {
   const request = await axios.get(`/api/ncaa2019/${teamName}`);
-  console.log(request)
   return {
     type: actionTypes.GET_TEAM_2_STATS,
     payload: request
