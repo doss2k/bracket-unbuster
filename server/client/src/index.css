@@ -13,10 +13,3 @@ body {
 h1 {
   font-family: 'Changa One', cursive;
 }
-
-.row {
-  display: flex;
-  flex-wrap: none;
-  margin-right: -15px;
-  margin-left: -15px;
-}

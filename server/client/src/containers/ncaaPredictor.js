@@ -140,7 +140,7 @@ class NCAAPredictor extends Component {
               <button 
                 className="btn btn-primary btn-lg" 
                 type="button" onClick={this.handlePrediction} 
-                style={{marginTop: 250}} 
+                style={{marginTop: 215}} 
                 disabled={this.state.team1 === this.state.team2}>
                 Predict
               </button>
