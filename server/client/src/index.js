@@ -3,11 +3,10 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import promise from "redux-promise";
-
 import App from "./components/App";
+import reducers from "./reducers";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./index.css";
-import reducers from "./reducers";
 
 // Creates the Redux store
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);

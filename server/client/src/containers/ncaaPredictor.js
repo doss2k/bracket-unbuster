@@ -4,8 +4,10 @@ import { bindActionCreators } from 'redux';
 import { fetchAllTeams, fetchTeam1Stats, fetchTeam2Stats } from '../actions/teams';
 
 const tf = require('@tensorflow/tfjs');
+const defaultLogo = 'https://miro.medium.com/max/480/1*0iD-PD-u-9-Kmd_6TakeEw.png';
 
 class NCAAPredictor extends Component {
+  
   componentDidMount() {
     this.props.fetchAllTeams();
   }
@@ -13,8 +15,8 @@ class NCAAPredictor extends Component {
   state = {
     team1: '',
     team2: '',
-    team1logo: '' || 'https://miro.medium.com/max/480/1*0iD-PD-u-9-Kmd_6TakeEw.png',
-    team2logo: '' || 'https://miro.medium.com/max/480/1*0iD-PD-u-9-Kmd_6TakeEw.png',
+    team1logo: '' || defaultLogo,
+    team2logo: '' || defaultLogo,
     team1versus2: [],
     team2versus1: [],
     team1PredictedScore: 0,
@@ -23,19 +25,21 @@ class NCAAPredictor extends Component {
   
   onInputChangeTeam1 = (event) => {
     this.setState({ [event.target.name]: event.target.value });
-    if (this.props.teams[event.target.selectedIndex-1].logoUrl == null) {
-      this.setState({team1logo: 'https://miro.medium.com/max/480/1*0iD-PD-u-9-Kmd_6TakeEw.png'})
+    const team1Clicked = this.props.teams.find(team => team.TeamName === event.target.value);
+    if (team1Clicked.logoUrl == null) {
+      this.setState({team1logo: defaultLogo})
     } else {
-    this.setState({team1logo: this.props.teams[event.target.selectedIndex-1].logoUrl})
+    this.setState({team1logo: team1Clicked.logoUrl})
     }
   }
 
   onInputChangeTeam2 = (event) => {
     this.setState({ [event.target.name]: event.target.value });
-    if (this.props.teams[event.target.selectedIndex-1].logoUrl == null) {
-      this.setState({team2logo: 'https://miro.medium.com/max/480/1*0iD-PD-u-9-Kmd_6TakeEw.png'})
+    const team2Clicked = this.props.teams.find(team => team.TeamName === event.target.value);
+    if (team2Clicked.logoUrl == null) {
+      this.setState({team2logo: defaultLogo})
     } else {
-    this.setState({team2logo: this.props.teams[event.target.selectedIndex-1].logoUrl})
+    this.setState({team2logo: team2Clicked.logoUrl})
     }
   }
      
@@ -99,71 +103,81 @@ class NCAAPredictor extends Component {
         <div className="row justify-content-center">
             <div className="col-md-4">
               <select
-                className="form-control teamSelect"
+                className="form-control"
                 value={this.state.team1}
-                onChange={this.onInputChangeTeam1}
+                onChange={this.onInputChangeTeam1}                
                 name="team1"
-                style={{marginTop: 50}}
+                style={{marginTop: 25}}
               >
                 <option value="default" style={{display: 'none'}}>Select Team 1</option>
-                {this.props.teams.map(team => (
-                  team.InTournament === "Yes" ?
-                  <option
-                    key={team.TeamName}
-                    value={team.TeamName}
-                    name={team.TeamName}
-                    style={{fontWeight: 'bold'}}
-                  >
-                    {team.TeamName}
-                  </option>
-                  :
-                  <option
-                    key={team.TeamName}
-                    value={team.TeamName}
-                    name={team.TeamName}
-                  >
-                    {team.TeamName}
-                  </option>
-                ))}
+                <optgroup label="NCAA Tournament Teams">
+                  {this.props.teams.filter(team => (team.InTournament === "Yes")).map(team => ( 
+                    <option
+                      key={team.TeamName}
+                      value={team.TeamName}
+                      name={team.TeamName}
+                    >
+                      {team.TeamName}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="All Other Teams">
+                  {this.props.teams.filter(team => (team.InTournament !== "Yes")).map(team => ( 
+                    <option
+                      key={team.TeamName}
+                      value={team.TeamName}
+                      name={team.TeamName}
+                    >
+                      {team.TeamName}
+                    </option>
+                  ))}
+                </optgroup>
               </select>
-              <img style={{marginTop: 20}} className="teamLogo img-fluid" src={this.state.team1logo} alt="Team 1" />
+              <img style={{marginTop: 25}} className="teamLogo img-fluid" src={this.state.team1logo} alt="Team 1" />
               <h2 className="text-center" style={{color: 'white', marginTop: 20}}>Score: {Math.round(this.state.team1PredictedScore)} </h2>
             </div>
             <div className="col-md-4 text-center">            
-              <button className="btn btn-primary btn-lg" type="button" onClick={this.handlePrediction} style={{marginTop: 250}} disabled={this.state.team1 === this.state.team2}>
+              <button 
+                className="btn btn-primary btn-lg" 
+                type="button" onClick={this.handlePrediction} 
+                style={{marginTop: 250}} 
+                disabled={this.state.team1 === this.state.team2}>
                 Predict
               </button>
             </div>
             <div className="col-md-4">
               <select
-                className="form-control teamSelect"
+                className="form-control"
                 value={this.state.team2}
                 onChange={this.onInputChangeTeam2}
                 name="team2"
-                style={{marginTop: 50}}
+                style={{marginTop: 25}}
               >
                 <option value="default" style={{display: 'none'}}>Select Team 2</option>
-                {this.props.teams.map(team => (
-                  team.InTournament === "Yes" ?
-                  <option
-                    key={team.TeamName}
-                    value={team.TeamName}
-                    name={team.TeamName}
-                    style={{fontWeight: 'bold'}}
-                  >
-                    {team.TeamName}
-                  </option>
-                  :
-                  <option
-                    key={team.TeamName}
-                    value={team.TeamName}
-                    name={team.TeamName}
-                  >
-                    {team.TeamName}
-                  </option>
-                ))}
+                <optgroup label="NCAA Tournament Teams">
+                  {this.props.teams.filter(team => (team.InTournament === "Yes")).map(team => ( 
+                    <option
+                      key={team.TeamName}
+                      value={team.TeamName}
+                      name={team.TeamName}
+                    >
+                      {team.TeamName}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="All Other Teams">
+                  {this.props.teams.filter(team => (team.InTournament !== "Yes")).map(team => ( 
+                    <option
+                      key={team.TeamName}
+                      value={team.TeamName}
+                      name={team.TeamName}
+                    >
+                      {team.TeamName}
+                    </option>
+                  ))}
+                </optgroup>
               </select>
-              <img style={{marginTop: 20}} className="teamLogo img-fluid" src={this.state.team2logo} alt="Team 2" />
+              <img style={{marginTop: 25}} className="teamLogo img-fluid" src={this.state.team2logo} alt="Team 2" />
               <h2 className="text-center" style={{color: 'white', marginTop: 20}}>Score: {Math.round(this.state.team2PredictedScore)}</h2>
             </div>
         </div>
