@@ -22,6 +22,8 @@ class NCAAPredictor extends Component {
     team1PredictedScore: 0,
     team2PredictedScore: 0
   }
+
+  // When the team 1 dropdown box is changed this updates the state for team1 and its logo
   
   onInputChangeTeam1 = (event) => {
     this.setState({team1PredictedScore: 0, team2PredictedScore: 0});
@@ -34,6 +36,8 @@ class NCAAPredictor extends Component {
     }
   }
 
+  // When the team 1 dropdown box is changed this updates the state for team1 and its logo
+
   onInputChangeTeam2 = (event) => {
     this.setState({team1PredictedScore: 0, team2PredictedScore: 0});
     this.setState({ [event.target.name]: event.target.value });
@@ -44,12 +48,16 @@ class NCAAPredictor extends Component {
     this.setState({team2logo: team2Clicked.logoUrl})
     }
   }
+
+  // When the predict button is hit this dispatches the actions to fetch the stats of both teams
      
   handlePrediction = async (event) => {
     await this.props.fetchTeam1Stats(this.state.team1);
     await this.props.fetchTeam2Stats(this.state.team2);
     this.processStats();
   }
+
+  // This function processes that stats for both teams into the proper format to feed into the model
 
   processStats = async () => {
     let team1versus2 = [];
@@ -87,6 +95,9 @@ class NCAAPredictor extends Component {
     this.setState({team1versus2, team2versus1});
     this.makePrediction();
   }
+
+  /* This function loads the prediction model, feeds both teams stats into it, and sets the state for
+     both teams predicted scores */
 
   makePrediction = async () => {
     const model = await tf.loadLayersModel('http://bracket-unbuster.herokuapp.com/model.json');
@@ -141,7 +152,7 @@ class NCAAPredictor extends Component {
             className="btn btn-primary btn-lg" 
             type="button" onClick={this.handlePrediction} 
             style={{marginTop: 200}} 
-            disabled={this.state.team1 === this.state.team2}>
+            disabled={(this.state.team1 === this.state.team2) || this.state.team1 === "" || this.state.team2 === ""}>
             Predict
           </button>
         </div>

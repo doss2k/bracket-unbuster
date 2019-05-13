@@ -41,3 +41,61 @@ h1 {
   grid-column: span 5;
   margin-right: 100px;
 }
+
+@media only screen and (max-width: 500px) {
+  .teamLogo {
+    width: 85px;
+    height: 85px;
+    margin: auto;
+    display: block;
+  }
+
+  .container-fluid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 75% 25%;
+    padding: 0;
+  }
+
+  .team1box {
+    grid-column: span 5;
+    margin-left: 10px;
+  }
+
+  .team2box {
+    grid-column: span 5;
+    margin-right: 10px;
+  }
+
+  .predictBox {
+    grid-column: span 2;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .teamSelect {
+    width: 95%;
+    margin: auto;
+    text-align-last: center;
+  }
+
+  .btn-lg {
+    width: auto;
+    font-size: 12px;
+    align-content: center;
+  }
+
+  h1 {
+    font-family: 'Arial';
+    color: white;
+    font-size: 24px;
+  }
+
+  body {
+    background-image: url('http://www.kinyu-z.net/data/wallpapers/236/1532149.jpg');
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+  }
+}
