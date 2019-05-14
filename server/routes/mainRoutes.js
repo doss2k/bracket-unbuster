@@ -2,7 +2,7 @@ const router = require("express").Router();
 const server = require("../server");
 const pool = server.getPool();
 
-// Test endpoint to verify frontend to backend is working
+// This endpoint returns all of the teams and stats from the 2019 database
 
 router.get("/api/ncaa2019", (request, response) => {
   pool.query("SELECT * FROM ncaa2019", function (error, results, fields) {
@@ -11,7 +11,7 @@ router.get("/api/ncaa2019", (request, response) => {
   });
 });
 
-// Test endpoint to verify frontend to backend is working
+// This endpoint returns the stats of a specific team based on the name
 
 router.get("/api/ncaa2019/:team", (request, response) => {
   const teamName = request.params.team;
@@ -23,7 +23,7 @@ router.get("/api/ncaa2019/:team", (request, response) => {
 });
 
 /* This endpoint is used to pull all of the data from multiple tables needed to 
-   generate the model.  The results are then pushed into the two arrays for the 
+   train the model.  The results are then pushed into the two arrays for the 
    stats and final scores to be able to be fed straight into the training model. */
 
 router.get("/api/ncaaResultsForModel", (request, response) => {
@@ -100,6 +100,10 @@ router.get("/api/ncaaResultsForModel", (request, response) => {
     response.json(statistics);
   });
 });
+
+/* This endpoint is used to pull all of the data from multiple tables needed to 
+   test the model.  The results are then pushed into the two arrays for the 
+   stats and final scores to be able to be fed straight into the training model. */
 
 router.get("/api/ncaaResultsForTest", (request, response) => {
   sql = `SELECT 
